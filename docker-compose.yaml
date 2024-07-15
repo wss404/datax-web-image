@@ -1,0 +1,19 @@
+version: "3"
+services:
+  datax-web:
+    image: datax-web:latest
+    ports:
+      - "9504:9504"
+      - "9527:9527"
+      - "9999:9999"
+    volumes:
+      - /opt/apps/datax-web/env.properties:/opt/datax-web-2.1.2/modules/datax-executor/bin/env.properties
+      - /opt/apps/datax-web/bootstrap.properties:/opt/datax-web-2.1.2/modules/datax-admin/conf/bootstrap.properties
+      - /opt/apps/datax-web/logs/executor/:/opt/datax-web-2.1.2/modules/datax-executor/data/applogs/executor/jobhandler
+    deploy:
+      resources:
+        limits:
+          memory: 8g
+        reservations:
+          memory: 2g
+    command: sh -c "./datax-web-2.1.2/bin/start-all.sh && tail -f /opt/datax-web-2.1.2/modules/datax-admin/bin/console.out /opt/datax-web-2.1.2/modules/datax-executor/bin/console.out"
